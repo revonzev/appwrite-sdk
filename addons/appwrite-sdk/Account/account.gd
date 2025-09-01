@@ -156,11 +156,11 @@ func create_jwt() -> AccountTask:
 
 func create_magic_url_session(email: String, url: String = "") -> AccountTask:
 	var payload: Dictionary = { email = email, url = url }
-	return __post(AccountTask.Task.CREATE_MAGIC_URL, payload)
+	return __post(AccountTask.Task.CREATE_MAGIC_LINK, payload)
 
 func update_magic_url_session(user_id: String, secret: String) -> AccountTask:
 	var payload: Dictionary = { userId = user_id, secret = secret }
-	return __post(AccountTask.Task.UPDATE_MAGIC_URL, payload)
+	return __post(AccountTask.Task.UPDATE_MAGIC_LINK, payload)
 
 func create_oauth2_session(provider: String, success: String = "", failure: String = "", scopes: PackedStringArray = []) -> AccountTask:
 	var endpoint: String = provider
