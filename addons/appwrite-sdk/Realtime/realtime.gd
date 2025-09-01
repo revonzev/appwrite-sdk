@@ -46,7 +46,7 @@ func _connected(proto = ""):
 	
 func _on_data():
 	var data: String = _client.get_peer(1).get_packet().get_string_from_utf8()
-	received_updates.emit(parse_json(data))
+	received_updates.emit(JSON.parse_string(data))
 
 func _process(delta):
 	_client.poll()
