@@ -122,9 +122,9 @@ func update_collection(
 	read: PackedStringArray = [], write: PackedStringArray = [], rules: PackedStringArray = []
    ) -> DatabaseTask:
 	var payload : Dictionary = { "name" : collection_name }
-	if not read.empty() : payload["$permissions"]["read"] = read
-	if not write.empty() : payload["$permissions"]["write"] = write
-	if not rules.empty() : payload["rules"] = rules
+	if not read.is_empty() : payload["$permissions"]["read"] = read
+	if not write.is_empty() : payload["$permissions"]["write"] = write
+	if not rules.is_empty() : payload["rules"] = rules
 	return __post(DatabaseTask.Task.UPDATE_COLLECTION, payload, {collection_id = collection_id})
 
 func delete_collection(collection_id: String) -> DatabaseTask:

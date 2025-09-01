@@ -165,7 +165,7 @@ func create_oauth2_session(provider: String, success: String = "", failure: Stri
 	var endpoint: String = provider
 	if success != "": endpoint+="&success="+success
 	if failure != "": endpoint+="&failure="+failure
-	if not scopes.empty(): endpoint+="&scopes="+scopes.join(",")
+	if not scopes.is_empty(): endpoint+="&scopes="+scopes.join(",")
 	return __get(AccountTask.Task.CREATE_SESSION_OAUTH2, endpoint)
 
 func create_verification(url: String) -> AccountTask:

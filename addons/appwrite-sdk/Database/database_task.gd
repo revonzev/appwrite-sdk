@@ -54,7 +54,7 @@ func match_code(code : int) -> int:
 func push_request(httprequest : HTTPRequest) -> void:
 	_handler = httprequest
 	httprequest.request_completed.connect(_on_task_completed)
-	httprequest.request(_endpoint, _headers, _method, JSON.new().stringify(_payload) if not _payload.empty() else "")
+	httprequest.request(_endpoint, _headers, _method, JSON.new().stringify(_payload) if not _payload.is_empty() else "")
 
 func _on_task_completed(result : int, response_code : int, headers : PackedStringArray, body : PackedByteArray) -> void:
 	if result > 0: 

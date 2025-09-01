@@ -29,7 +29,7 @@ func subscribe(channels: Array) -> bool:
 	return !bool(err)
 
 func unsubscribe(channels: Array = []) -> void:
-	if channels.empty():
+	if channels.is_empty():
 		_client.disconnect_from_host(1000, "Client ubsubscribed.")
 	else:
 		for channel in channels: subscribed_channels.erase(channel)

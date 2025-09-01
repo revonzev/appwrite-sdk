@@ -81,12 +81,12 @@ func _build_multipart(file_path: String, read: PackedStringArray, write: PackedS
     bytes.append_array("Content-Type: text/plain\r\n\r\n".to_ascii())
     bytes.append_array(_read_file(file_path))
     bytes.append_array("\r\n".to_ascii())
-    if not read.empty():
+    if not read.is_empty():
         for permission_i in read.size():
             bytes.append_array(("--"+BOUNDARY+"\r\n").to_ascii())
             bytes.append_array(('Content-Disposition: form-data; name="read[%s]"\r\n\r\n'%[permission_i]).to_ascii())
             bytes.append_array((read[permission_i]+"\r\n").to_ascii())
-    if not write.empty():
+    if not write.is_empty():
         for permission_i in write.size():
             bytes.append_array(("--"+BOUNDARY+"\r\n").to_ascii())
             bytes.append_array(('Content-Disposition: form-data; name="write[%s]"\r\n\r\n'%[permission_i]).to_ascii())
@@ -96,7 +96,7 @@ func _build_multipart(file_path: String, read: PackedStringArray, write: PackedS
 #       CLIENT & SERVER
 func create_file(file_path: String, read: PackedStringArray = [], write: PackedStringArray = []) -> StorageTask:
     var file: PackedByteArray = _build_multipart(file_path, read, write)
-    if file.empty(): 
+    if file.is_empty(): 
         var fake_task: StorageTask = StorageTask.new(-1, "", [])
         fake_task.error = { message = "Could not open file." }
         _process_task(fake_task, true)
@@ -142,7 +142,7 @@ func get_file_view(file_id: String, save_path: String = "") -> StorageTask:
 
 func update_file(file_path: String, read: PackedStringArray, write: PackedStringArray) -> StorageTask:
     var file: PackedByteArray = _build_multipart(file_path, read, write)
-    if file.empty(): 
+    if file.is_empty(): 
         var fake_task: StorageTask = StorageTask.new(-1, "", [])
         fake_task.error = { message = "Could not open file." }
         _process_task(fake_task, true)
@@ -162,7 +162,7 @@ func _process_task(task : StorageTask, _fake : bool = false, _params: Dictionary
         task.complete(task.data, task.error)
     else:
         var httprequest : HTTPRequest = HTTPRequest.new()
-        if not _params.empty():
+        if not _params.is_empty():
              httprequest.download_file = _params.get("download_file", "")
         add_child(httprequest)
         task.push_request(httprequest)
