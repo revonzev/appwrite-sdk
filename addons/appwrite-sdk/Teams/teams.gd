@@ -32,7 +32,7 @@ func __match_resource(type: int, params: Dictionary = {}) -> String:
 	match type:
 		TeamsTask.Task.LIST, TeamsTask.Task.CREATE, TeamsTask.Task.DELETE: resource = _REST_BASE
 		TeamsTask.Task.GET, TeamsTask.Task.UPDATE, TeamsTask.Task.DELETE: resource = _REST_BASE + "/" + params.team_id
-		TeamsTask.Task.CREATE_MEMBERSHIP, TeamsTask.Task.GET_MEMBERSHIPS: resource = _REST_BASE + "/" + params.team_id + "/memberships" + (params.query if params.has("query") else "")
+		TeamsTask.Task.CREATE_MEMBERSHIP, TeamsTask.Task.GET_MEMBERSHIP: resource = _REST_BASE + "/" + params.team_id + "/memberships" + (params.query if params.has("query") else "")
 		TeamsTask.Task.UPDATE_MEMBERSHIP_ROLES, TeamsTask.Task.UPDATE_MEMBERSHIP_STATUS, TeamsTask.Task.DELETE_MEMBERSHIP: resource = _REST_BASE + "/" + params.team_id + "/memberships/" + params.membership_id
 	return resource
 
@@ -90,7 +90,7 @@ func get_memberships(team_id: String, search: String = "", limit: int = 0, offse
 	if limit!=0: query+="&limit="+str(limit)
 	if offset!=0: query+="&offset="+str(offset)
 	if order_by!="": query+="&orderBy="+order_by
-	return __get(TeamsTask.Task.GET_MEMBERSHIPS, {team_id = team_id, query = query})
+	return __get(TeamsTask.Task.GET_MEMBERSHIP, {team_id = team_id, query = query})
 
 func update_membership_status(team_id: String, membership_id: String, user_id: String, secret: String) -> TeamsTask:
 	return __post(TeamsTask.Task.UPDATE_MEMBERSHIP_STATUS, { userId = user_id, secret = secret }, { team_id = team_id, membership_id = membership_id })
@@ -123,7 +123,7 @@ func _on_task_completed(_task_response: TaskResponse, task: TeamsTask) -> void:
 			TeamsTask.Task.DELETE: _signal = deleted
 			TeamsTask.Task.CREATE_MEMBERSHIP : _signal = created_membership
 			TeamsTask.Task.UPDATE_MEMBERSHIP_ROLES : _signal = updated_membership_roles
-			TeamsTask.Task.GET_MEMBERSHIPS : _signal = got_membership
+			TeamsTask.Task.GET_MEMBERSHIP : _signal = got_membership
 			TeamsTask.Task.UPDATE_MEMBERSHIP_STATUS : _signal = updated_membership_status
 			TeamsTask.Task.DELETE_MEMBERSHIP : _signal = deleted_membership
 			_: _signal = success
