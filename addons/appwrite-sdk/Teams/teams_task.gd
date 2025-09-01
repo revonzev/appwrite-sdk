@@ -18,7 +18,7 @@ enum Task {
 }
 
 var _code : int
-var _method : int
+var _method : HTTPClient.Method
 var _endpoint : String
 var _headers : PackedStringArray
 var _payload : Dictionary
