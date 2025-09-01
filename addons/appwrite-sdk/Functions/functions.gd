@@ -100,7 +100,7 @@ func get_function(function_id: String) -> FunctionsTask:
     return __get(FunctionsTask.Task.GET, { function_id = function_id })
 
 func update(function_id: String, name: String, execute: Array, vars: Dictionary = {}, events: Array = [], schedule: String = "", timeout: int = -1) -> FunctionsTask:
-    return __post(FunctionsTask.Task.UPDATE, { name = name, execute = execute, vars = vars, events = events, schedule = schedule, timeout = timeout }, { function_id = function_id })
+    return __post(FunctionsTask.Task.UPDATE_FUNCTION, { name = name, execute = execute, vars = vars, events = events, schedule = schedule, timeout = timeout }, { function_id = function_id })
 
 func update_tag(function_id: String, tag: String) -> FunctionsTask:
     return __post(FunctionsTask.Task.UPDATE_TAG, { tag = tag }, { function_id = function_id })
@@ -151,7 +151,7 @@ func _on_task_completed(_task_response: TaskResponse, task: FunctionsTask) -> vo
             FunctionsTask.Task.CREATE: _signal = created
             FunctionsTask.Task.LIST: _signal = listed
             FunctionsTask.Task.GET: _signal = got
-            FunctionsTask.Task.UPDATE: _signal = updated
+            FunctionsTask.Task.UPDATE_FUNCTION: _signal = updated
             FunctionsTask.Task.UPDATE_TAG: _signal = updated_tag
             FunctionsTask.Task.DELETE: _signal = deleted
             FunctionsTask.Task.CREATE_TAG: _signal = created_tag
