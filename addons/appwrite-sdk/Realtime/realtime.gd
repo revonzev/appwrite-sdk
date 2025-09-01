@@ -8,7 +8,7 @@ signal received_updates(updates)
 
 const _BASE_URL: String = "/realtime"
 
-var _client = WebSocketClient.new()
+var _client = WebSocketPeer.new()
 var subscribed_channels: Array = []
 
 func _ready():
