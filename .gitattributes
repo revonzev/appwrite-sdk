@@ -1,3 +1,4 @@
 * text=auto eol=lf
 
-imgs/	export-ignore
+imgs/
+/** export-ignore
