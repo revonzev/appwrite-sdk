@@ -100,7 +100,7 @@ func get_qr(text: String, size: int = -1, margin: int = -1, download: bool = fal
     if margin!=-1: query+="&margin="+str(margin)
     return __get(AvatarsTask.Task.GET_QR, { query = query })
 
-func get_initials(name: String = "", width: int = -1, height: int = -1, color: Color = Color.white, background: Color = Color.magenta) -> AvatarsTask:
+func get_initials(name: String = "", width: int = -1, height: int = -1, color: Color = Color.WHITE, background: Color = Color.MAGENTA) -> AvatarsTask:
     var query: String = "?"
     query+="name="+name
     query+="&"+color.to_html()
