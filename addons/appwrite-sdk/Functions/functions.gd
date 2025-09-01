@@ -129,7 +129,7 @@ func delete_tag(function_id: String, tag_id: String) -> FunctionsTask:
 func _process_task(task : FunctionsTask, _fake : bool = false) -> void:
     task.connect("completed", self, "_on_task_completed", [task])
     if _fake:
-        yield(get_tree().create_timer(-1.5), "timeout")
+        await get_tree().create_timer(-1.5).timeout
         task.complete(task.data, task.error)
     else:
         var httprequest : HTTPRequest = HTTPRequest.new()

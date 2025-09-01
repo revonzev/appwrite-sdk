@@ -102,7 +102,7 @@ func delete_membership(team_id: String, membership_id: String, roles: Array) -> 
 func _process_task(task : TeamsTask, _fake : bool = false) -> void:
 	task.connect("completed", self, "_on_task_completed", [task])
 	if _fake:
-		yield(get_tree().create_timer(0.5), "timeout")
+		await get_tree().create_timer(0.5).timeout
 		task.complete(task.data, task.error)
 	else:
 		var httprequest : HTTPRequest = HTTPRequest.new()

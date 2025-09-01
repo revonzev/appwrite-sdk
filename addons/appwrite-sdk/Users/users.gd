@@ -181,7 +181,7 @@ func update_verification(user_id: String, secret: String) -> UsersTask:
 func _process_task(task : UsersTask, _fake : bool = false) -> void:
 	task.connect("completed", self, "_on_task_completed", [task])
 	if _fake:
-		yield(get_tree().create_timer(0.5), "timeout")
+		await get_tree().create_timer(0.5).timeout
 		task.complete(task.data, task.error)
 	else:
 		var httprequest : HTTPRequest = HTTPRequest.new()

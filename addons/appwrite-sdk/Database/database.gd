@@ -135,7 +135,7 @@ func delete_collection(collection_id: String) -> DatabaseTask:
 func _process_task(task : DatabaseTask, _fake : bool = false) -> void:
 	task.connect("completed", self, "_on_task_completed", [task])
 	if _fake:
-		yield(get_tree().create_timer(0.5), "timeout")
+		await get_tree().create_timer(0.5).timeout
 		task.complete(task.data, task.error)
 	else:
 		var httprequest : HTTPRequest = HTTPRequest.new()
