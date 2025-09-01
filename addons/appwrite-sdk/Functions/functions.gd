@@ -152,7 +152,7 @@ func _on_task_completed(_task_response: TaskResponse, task: FunctionsTask) -> vo
             FunctionsTask.Task.LIST: _signal = listed
             FunctionsTask.Task.GET: _signal = got
             FunctionsTask.Task.UPDATE: _signal = updated
-            FunctionsTask.Task.UPDATE_TAG: _signal = tag_updated
+            FunctionsTask.Task.UPDATE_TAG: _signal = updated_tag
             FunctionsTask.Task.DELETE: _signal = deleted
             FunctionsTask.Task.CREATE_TAG: _signal = created_tag
             FunctionsTask.Task.LIST_TAGS: _signal = listed_tags
