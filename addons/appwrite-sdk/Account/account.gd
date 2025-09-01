@@ -154,11 +154,11 @@ func create_anonymous_session() -> AccountTask:
 func create_jwt() -> AccountTask:
 	return __post(AccountTask.Task.CREATE_JWT)
 
-func create_magic_url_session(email: String, url: String = "") -> AccountTask:
+func create_magic_link_session(email: String, url: String = "") -> AccountTask:
 	var payload: Dictionary = { email = email, url = url }
 	return __post(AccountTask.Task.CREATE_MAGIC_LINK, payload)
 
-func update_magic_url_session(user_id: String, secret: String) -> AccountTask:
+func update_magic_link_session(user_id: String, secret: String) -> AccountTask:
 	var payload: Dictionary = { userId = user_id, secret = secret }
 	return __post(AccountTask.Task.UPDATE_MAGIC_LINK, payload)
 
