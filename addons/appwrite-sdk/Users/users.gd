@@ -153,11 +153,11 @@ func create_anonymous_session() -> UsersTask:
 
 func create_magic_url_session(email: String, url: String = "") -> UsersTask:
 	var payload: Dictionary = { email = email, url = url }
-	return __post(UsersTask.Task.CREATE_MAGIC_URL, payload)
+	return __post(UsersTask.Task.CREATE_MAGIC_LINK, payload)
 
 func update_magic_url_session(user_id: String, secret: String) -> UsersTask:
 	var payload: Dictionary = { userId = user_id, secret = secret }
-	return __post(UsersTask.Task.UPDATE_MAGIC_URL, payload)
+	return __post(UsersTask.Task.UPDATE_MAGIC_LINK, payload)
 
 func create_oauth2_session(provider: String, success: String = "", failure: String = "", scopes: PackedStringArray = []) -> UsersTask:
 	var endpoint: String = provider
