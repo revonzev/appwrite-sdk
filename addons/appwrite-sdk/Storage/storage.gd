@@ -75,21 +75,21 @@ func _read_file(file_path: String) -> PackedByteArray :
     return file_buff
 
 func _build_multipart(file_path: String, read: PackedStringArray, write: PackedStringArray) -> PackedByteArray:
-    var bytes: PackedByteArray = ("--"+BOUNDARY+"\r\n").to_ascii()
-    bytes.append_array(('Content-Disposition: form-data; name="file"; filename="%s"\r\n'%[file_path.get_file()]).to_ascii())
-    bytes.append_array("Content-Type: text/plain\r\n\r\n".to_ascii())
+    var bytes: PackedByteArray = ("--"+BOUNDARY+"\r\n").to_ascii_buffer()
+    bytes.append_array(('Content-Disposition: form-data; name="file"; filename="%s"\r\n'%[file_path.get_file()]).to_ascii_buffer())
+    bytes.append_array("Content-Type: text/plain\r\n\r\n".to_ascii_buffer())
     bytes.append_array(_read_file(file_path))
-    bytes.append_array("\r\n".to_ascii())
+    bytes.append_array("\r\n".to_ascii_buffer())
     if not read.is_empty():
         for permission_i in read.size():
-            bytes.append_array(("--"+BOUNDARY+"\r\n").to_ascii())
-            bytes.append_array(('Content-Disposition: form-data; name="read[%s]"\r\n\r\n'%[permission_i]).to_ascii())
-            bytes.append_array((read[permission_i]+"\r\n").to_ascii())
+            bytes.append_array(("--"+BOUNDARY+"\r\n").to_ascii_buffer())
+            bytes.append_array(('Content-Disposition: form-data; name="read[%s]"\r\n\r\n'%[permission_i]).to_ascii_buffer())
+            bytes.append_array((read[permission_i]+"\r\n").to_ascii_buffer())
     if not write.is_empty():
         for permission_i in write.size():
-            bytes.append_array(("--"+BOUNDARY+"\r\n").to_ascii())
-            bytes.append_array(('Content-Disposition: form-data; name="write[%s]"\r\n\r\n'%[permission_i]).to_ascii())
-            bytes.append_array((write[permission_i]+"\r\n").to_ascii())
+            bytes.append_array(("--"+BOUNDARY+"\r\n").to_ascii_buffer())
+            bytes.append_array(('Content-Disposition: form-data; name="write[%s]"\r\n\r\n'%[permission_i]).to_ascii_buffer())
+            bytes.append_array((write[permission_i]+"\r\n").to_ascii_buffer())
     return bytes
 
 #       CLIENT & SERVER
