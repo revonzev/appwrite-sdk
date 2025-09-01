@@ -1,5 +1,5 @@
 class_name DatabaseTask
-extends Reference
+extends RefCounted
 
 signal completed(task_response)
 

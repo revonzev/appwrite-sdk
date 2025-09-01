@@ -1,5 +1,5 @@
 class_name TeamsTask
-extends Reference
+extends RefCounted
 
 signal completed(task_response)
 

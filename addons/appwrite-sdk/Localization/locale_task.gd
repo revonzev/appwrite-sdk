@@ -1,5 +1,5 @@
 class_name LocaleTask
-extends Reference
+extends RefCounted
 
 signal completed(task_response)
 

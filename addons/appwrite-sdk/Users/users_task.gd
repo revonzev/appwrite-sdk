@@ -1,5 +1,5 @@
 class_name UsersTask
-extends Reference
+extends RefCounted
 
 signal completed(task_response)
 
