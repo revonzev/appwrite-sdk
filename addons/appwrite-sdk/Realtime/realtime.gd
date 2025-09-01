@@ -12,10 +12,10 @@ var _client = WebSocketClient.new()
 var subscribed_channels: Array = []
 
 func _ready():
-	_client.connect("connection_closed", self, "_closed")
-	_client.connect("connection_error", self, "_closed")
-	_client.connect("connection_established", self, "_connected")
-	_client.connect("data_received", self, "_on_data")
+	_client.connection_closed.connect(_closed)
+	_client.connection_error.connect(_closed)
+	_client.connection_established.connect(_connected)
+	_client.data_received.connect(_on_data)
 
 func subscribe(channels: Array) -> bool:
 	var endpoint: String = get_parent().endpoint_realtime

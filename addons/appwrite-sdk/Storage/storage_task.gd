@@ -50,7 +50,7 @@ func match_code(code : int) -> int:
 
 func push_request(httprequest : HTTPRequest) -> void:
 	_handler = httprequest
-	httprequest.connect("request_completed", self, "_on_task_completed")
+	httprequest.request_completed.connect(_on_task_completed)
 	if not _bytepayload.empty():
 		var err = httprequest.request(_endpoint, _headers, true, _method, _bytepayload.get_string_from_ascii())
 	else:

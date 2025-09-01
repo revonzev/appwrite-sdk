@@ -111,7 +111,7 @@ func get_initials(name: String = "", width: int = -1, height: int = -1, color: C
 
 # Process a specific task
 func _process_task(task : AvatarsTask, _fake : bool = false) -> void:
-    task.connect("completed", self, "_on_task_completed", [task])
+    task.completed.connect(_on_task_completed.bind([task]))
     if _fake:
         await get_tree().create_timer(0.5).timeout
         task.complete(task.data, task.error)

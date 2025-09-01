@@ -100,7 +100,7 @@ func delete_membership(team_id: String, membership_id: String, roles: Array) -> 
 
 # Process a specific task
 func _process_task(task : TeamsTask, _fake : bool = false) -> void:
-	task.connect("completed", self, "_on_task_completed", [task])
+	task.completed.connect(_on_task_completed.bind([task]))
 	if _fake:
 		await get_tree().create_timer(0.5).timeout
 		task.complete(task.data, task.error)

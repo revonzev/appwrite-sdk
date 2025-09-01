@@ -96,7 +96,7 @@ func get_antivirus() -> HealthTask:
 
 # Process a specific task
 func _process_task(task : HealthTask, _fake : bool = false) -> void:
-    task.connect("completed", self, "_on_task_completed", [task])
+    task.completed.connect(_on_task_completed.bind([task]))
     if _fake:
         await get_tree().create_timer(0.5).timeout
         task.complete(task.data, task.error)
