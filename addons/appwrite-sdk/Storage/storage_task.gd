@@ -60,8 +60,8 @@ func _on_task_completed(result : int, response_code : int, headers : PackedStrin
 	if result > 0: 
 		complete({}, {result = result, message = "HTTP Request Error"})
 		return
-	var validate: String = validate_json(body.get_string_from_utf8())
-	var result_body: Dictionary = parse_json(body.get_string_from_utf8()) if not validate else {error = validate}
+	var is_valid: bool = JSON.new().parse(body.get_string_from_utf8()) == Error.OK
+	var result_body: Dictionary = JSON.parse_string(body.get_string_from_utf8()) if is_valid else {error = is_valid}
 	if response_code in [200, 201, 204]:
 		if _code in [Task.DOWNLOAD_FILE, Task.GET_FILE_VIEW, Task.GET_FILE_PREVIEW]:
 			var file_name: String = get_header_value("Content-Disposition: ", headers)

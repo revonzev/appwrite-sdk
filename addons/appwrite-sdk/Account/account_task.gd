@@ -76,8 +76,8 @@ func _on_task_completed(result : int, response_code : int, headers : PackedStrin
 	if result > 0: 
 		complete({}, {result = result, message = "HTTP Request Error"})
 		return
-	var validate: String = validate_json(body.get_string_from_utf8())
-	var result_body: Dictionary = parse_json(body.get_string_from_utf8()) if not validate else {error = validate}
+	var is_valid: bool = JSON.new().parse(body.get_string_from_utf8()) == Error.OK # TODO: improve the error handling ("error =") for all _task script
+	var result_body: Dictionary = JSON.parse_string(body.get_string_from_utf8()) if is_valid else {error = is_valid}
 	match response_code:
 		200:
 			match _code:
