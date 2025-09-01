@@ -29,6 +29,7 @@ enum Task {
 	CREATE_EMAIL_VERIFICATION,
 	UPDATE_EMAIL_VERIFICATION,
 	LOGOUT,
+	USER,
 }
 
 var _code : int
