@@ -94,7 +94,7 @@ func get_favicon(url: String) -> AvatarsTask:
     return __get(AvatarsTask.Task.GET_FAVICON, { query = query })
     
 func get_qr(text: String, size: int = -1, margin: int = -1, download: bool = false) -> AvatarsTask:
-    var query: String = "?text="+text.http_escape()
+    var query: String = "?text="+text.uri_encode()
     query+="&download="+str(download).to_lower()
     if size!=-1: query+="&size="+str(size)
     if margin!=-1: query+="&margin="+str(margin)
