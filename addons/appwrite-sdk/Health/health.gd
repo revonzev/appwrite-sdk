@@ -3,7 +3,7 @@ extends Node
 
 const _REST_BASE: String = "/health"
 
-var _cookies : PoolStringArray = []
+var _cookies : PackedStringArray = []
 
 signal task_response(task_response)
 signal success(response)
@@ -134,5 +134,5 @@ func _fetch_cookies(task : HealthTask) -> void:
     var cookies : Array
     for cookie in task.cookies:
         cookies.append("Cookie:%s=%s"%[cookie.keys()[0], cookie.values()[0]])
-    _cookies = PoolStringArray(cookies)
+    _cookies = PackedStringArray(cookies)
     get_parent().cookies += _cookies

@@ -56,7 +56,7 @@ func __post(type: int, payload: Dictionary = {}, params: Dictionary = {}) -> Dat
 # -------- CLIENT API
 func create_document(
 	collection_id: String, data: Dictionary,
-	read: PoolStringArray = ["*"], write: PoolStringArray = ["*"],
+	read: PackedStringArray = ["*"], write: PackedStringArray = ["*"],
 	parent_id: String = "", parent_property: String = "", parent_property_type: String = ""
 ) -> DatabaseTask:
 	var payload : Dictionary = {
@@ -80,7 +80,7 @@ func get_document(collection_id: String, document_id: String) -> DatabaseTask:
 
 func update_document(
 	document_id: String, collection_id: String, 
-	data: Dictionary, read: PoolStringArray = ["*"], write: PoolStringArray = ["*"]
+	data: Dictionary, read: PackedStringArray = ["*"], write: PackedStringArray = ["*"]
 ) -> DatabaseTask:
 	var payload : Dictionary = {
 		"data" : data,
@@ -94,7 +94,7 @@ func delete_document(collection_id: String, document_id: String) -> DatabaseTask
 # ------- SERVER API
 func create_collection(
 	collection_name: String,
-	read: PoolStringArray, write: PoolStringArray, rules: Array
+	read: PackedStringArray, write: PackedStringArray, rules: Array
    ) -> DatabaseTask:
 	var _rules : Array = []
 	for rule in rules:
@@ -119,7 +119,7 @@ func get_collection(collection_id: String) -> DatabaseTask:
 
 func update_collection(
 	collection_id: String, collection_name: String,
-	read: PoolStringArray = [], write: PoolStringArray = [], rules: PoolStringArray = []
+	read: PackedStringArray = [], write: PackedStringArray = [], rules: PackedStringArray = []
    ) -> DatabaseTask:
 	var payload : Dictionary = { "name" : collection_name }
 	if not read.empty() : payload["$permissions"]["read"] = read

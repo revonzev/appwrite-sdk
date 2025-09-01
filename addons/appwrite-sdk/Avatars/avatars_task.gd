@@ -16,7 +16,7 @@ enum Task {
 var _code : int
 var _method : int
 var _endpoint : String
-var _headers : PoolStringArray
+var _headers : PackedStringArray
 var _payload : Dictionary
 
 # EXPOSED VARIABLES ---------------------------------------------------------
@@ -26,7 +26,7 @@ var error : Dictionary
 
 var _handler : HTTPRequest
 
-func _init(code : int, endpoint : String, headers : PoolStringArray,  payload : Dictionary = {}, bytepayload: PoolByteArray = []):
+func _init(code : int, endpoint : String, headers : PackedStringArray,  payload : Dictionary = {}, bytepayload: PoolByteArray = []):
 	_code = code
 	_endpoint = endpoint
 	_headers = headers
@@ -42,7 +42,7 @@ func push_request(httprequest : HTTPRequest) -> void:
 	httprequest.connect("request_completed", self, "_on_task_completed")
 	httprequest.request(_endpoint, _headers, true, _method, to_json(_payload))
 
-func _on_task_completed(result : int, response_code : int, headers : PoolStringArray, body : PoolByteArray) -> void:
+func _on_task_completed(result : int, response_code : int, headers : PackedStringArray, body : PoolByteArray) -> void:
 	if result > 0: 
 		complete({}, {result = result, message = "HTTP Request Error"})
 		return
@@ -75,7 +75,7 @@ func complete(_result: Dictionary = response,  _error : Dictionary = error) -> v
 	emit_signal("completed", TaskResponse.new(response, error))
 
 
-func get_header_value(_header: String, headers : PoolStringArray) -> String:
+func get_header_value(_header: String, headers : PackedStringArray) -> String:
 	for header in headers:
 		if header.begins_with(_header):
 			return header.trim_prefix(_header)

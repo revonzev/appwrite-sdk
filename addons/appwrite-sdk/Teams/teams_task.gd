@@ -20,7 +20,7 @@ enum Task {
 var _code : int
 var _method : int
 var _endpoint : String
-var _headers : PoolStringArray
+var _headers : PackedStringArray
 var _payload : Dictionary
 
 # EXPOSED VARIABLES ---------------------------------------------------------
@@ -30,7 +30,7 @@ var error : Dictionary
 
 var _handler : HTTPRequest
 
-func _init(code : int, endpoint : String, headers : PoolStringArray, payload : Dictionary = {}):
+func _init(code : int, endpoint : String, headers : PackedStringArray, payload : Dictionary = {}):
 	_code = code
 	_endpoint = endpoint
 	_headers = headers
@@ -56,7 +56,7 @@ func push_request(httprequest : HTTPRequest) -> void:
 	_handler.connect("request_completed", self, "_on_task_completed")
 	_handler.request(_endpoint, _headers, true, _method, to_json(_payload))
 
-func _on_task_completed(result : int, response_code : int, headers : PoolStringArray, body : PoolByteArray) -> void:
+func _on_task_completed(result : int, response_code : int, headers : PackedStringArray, body : PoolByteArray) -> void:
 	if result > 0: 
 		complete({}, {result = result, message = "HTTP Request Error"})
 		return

@@ -14,7 +14,7 @@ var realtime : AppwriteRealtime
 
 var endpoint: String = "https://appwrite.io/v1"
 var endpoint_realtime: String = ""
-var cookies : PoolStringArray = []
+var cookies : PackedStringArray = []
 var headers : Dictionary = {
 	"Content-Type" : "application/json",
 	"X-SDK-Version":"appwrite:gdscript:1.5.0",
@@ -91,8 +91,8 @@ func set_jwt(jwt : String) -> Node:
 	return self
 
 
-func _get_headers() -> PoolStringArray:
+func _get_headers() -> PackedStringArray:
 	var headers_array : Array = []
 	for header in headers:
 		if headers[header] != "": headers_array.append(header+":"+headers[header])
-	return PoolStringArray(headers_array) + cookies
+	return PackedStringArray(headers_array) + cookies

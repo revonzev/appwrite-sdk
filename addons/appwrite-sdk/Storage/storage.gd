@@ -51,9 +51,9 @@ func __get(type : int, params: Dictionary = {}) -> StorageTask:
     
 # POST, PUT, PATCH base function
 func __post(type: int, payload: Dictionary = {}, params: Dictionary = {}) -> StorageTask:
-    var temp_headers: PoolStringArray = []
+    var temp_headers: PackedStringArray = []
     temp_headers.append("Content-Type:multipart/form-data; boundary="+BOUNDARY)
-    var headers: PoolStringArray = get_parent()._get_headers()
+    var headers: PackedStringArray = get_parent()._get_headers()
     headers.remove(3)
     var storage_task : StorageTask = StorageTask.new(
         type,
@@ -75,7 +75,7 @@ func _read_file(file_path: String) -> PoolByteArray :
     file.close()
     return file_buff
 
-func _build_multipart(file_path: String, read: PoolStringArray, write: PoolStringArray) -> PoolByteArray:
+func _build_multipart(file_path: String, read: PackedStringArray, write: PackedStringArray) -> PoolByteArray:
     var bytes: PoolByteArray = ("--"+BOUNDARY+"\r\n").to_ascii()
     bytes.append_array(('Content-Disposition: form-data; name="file"; filename="%s"\r\n'%[file_path.get_file()]).to_ascii())
     bytes.append_array("Content-Type: text/plain\r\n\r\n".to_ascii())
@@ -94,7 +94,7 @@ func _build_multipart(file_path: String, read: PoolStringArray, write: PoolStrin
     return bytes
 
 #       CLIENT & SERVER
-func create_file(file_path: String, read: PoolStringArray = [], write: PoolStringArray = []) -> StorageTask:
+func create_file(file_path: String, read: PackedStringArray = [], write: PackedStringArray = []) -> StorageTask:
     var file: PoolByteArray = _build_multipart(file_path, read, write)
     if file.empty(): 
         var fake_task: StorageTask = StorageTask.new(-1, "", [])
@@ -140,7 +140,7 @@ func get_file_download(file_id: String, save_path: String = "") -> StorageTask:
 func get_file_view(file_id: String, save_path: String = "") -> StorageTask:
     return __get(StorageTask.Task.GET_FILE_VIEW, {file_id = file_id, to_path = save_path })
 
-func update_file(file_path: String, read: PoolStringArray, write: PoolStringArray) -> StorageTask:
+func update_file(file_path: String, read: PackedStringArray, write: PackedStringArray) -> StorageTask:
     var file: PoolByteArray = _build_multipart(file_path, read, write)
     if file.empty(): 
         var fake_task: StorageTask = StorageTask.new(-1, "", [])

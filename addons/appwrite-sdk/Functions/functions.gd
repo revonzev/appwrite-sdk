@@ -3,7 +3,7 @@ extends Node
 
 const _REST_BASE: String = "/functions"
 
-var _cookies : PoolStringArray = []
+var _cookies : PackedStringArray = []
 
 signal task_response(task_response)
 signal success(response)

@@ -14,7 +14,7 @@ class Providers:
 	const GOOGLE := "google"
 	const TWITTER := "twitter"
 
-var _cookies : PoolStringArray = []
+var _cookies : PackedStringArray = []
 
 signal task_response(task_response)
 signal success(response)
@@ -161,7 +161,7 @@ func update_magic_url_session(user_id: String, secret: String) -> AccountTask:
 	var payload: Dictionary = { userId = user_id, secret = secret }
 	return __post(AccountTask.Task.UPDATE_MAGIC_URL, payload)
 
-func create_oauth2_session(provider: String, success: String = "", failure: String = "", scopes: PoolStringArray = []) -> AccountTask:
+func create_oauth2_session(provider: String, success: String = "", failure: String = "", scopes: PackedStringArray = []) -> AccountTask:
 	var endpoint: String = provider
 	if success != "": endpoint+="&success="+success
 	if failure != "": endpoint+="&failure="+failure
