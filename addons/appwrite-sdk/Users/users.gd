@@ -116,7 +116,7 @@ func update_name(name: String) -> UsersTask:
 	return __post(UsersTask.Task.UPDATE_NAME, { name = name })
 
 func update_password(password: String, old_password: String) -> UsersTask:
-	return __post(UsersTask.Task.UPDATE_PWD, { password = password, oldPassword = old_password })
+	return __post(UsersTask.Task.UPDATE_PASSWORD, { password = password, oldPassword = old_password })
 
 func update_email(email: String, password: String) -> UsersTask:
 	return __post(UsersTask.Task.UPDATE_EMAIL, { email = email, password = password })
