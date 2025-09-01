@@ -54,7 +54,7 @@ func __post(type: int, payload: Dictionary = {}, params: Dictionary = {}) -> Sto
     var temp_headers: PackedStringArray = []
     temp_headers.append("Content-Type:multipart/form-data; boundary="+BOUNDARY)
     var headers: PackedStringArray = get_parent()._get_headers()
-    headers.remove(3)
+    headers.remove_at(3)
     var storage_task : StorageTask = StorageTask.new(
         type,
         get_parent().endpoint + __match_resource(type, params), 
