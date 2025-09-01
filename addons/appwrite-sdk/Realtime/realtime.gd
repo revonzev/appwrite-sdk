@@ -34,19 +34,19 @@ func unsubscribe(channels: Array = []) -> void:
 	else:
 		for channel in channels: subscribed_channels.erase(channel)
 		subscribe([])
-	emit_signal("unsubscribed", channels)
+	unsubscribed.emit(channels)
 
 func _closed(was_clean = false):
-	emit_signal("received_error", { was_clean = was_clean })
-	emit_signal("unsubscribed")
+	received_error.emit({ was_clean = was_clean })
+	unsubscribed.emit()
 	set_process(false)
 
 func _connected(proto = ""):
-	emit_signal("subscribed")
+	subscribed.emit()
 	
 func _on_data():
 	var data: String = _client.get_peer(1).get_packet().get_string_from_utf8()
-	emit_signal("received_updates", parse_json(data))
+	received_updates.emit(parse_json(data))
 
 func _process(delta):
 	_client.poll()

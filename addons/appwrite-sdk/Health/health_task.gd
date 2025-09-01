@@ -61,4 +61,4 @@ func complete(_result: Dictionary,  _error : Dictionary = {}) -> void:
 	response = _result
 	error = _error
 	if _handler : _handler.queue_free()
-	emit_signal("completed", TaskResponse.new(response, error))
+	completed.emit(TaskResponse.new(response, error))

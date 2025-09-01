@@ -14,6 +14,7 @@ signal got_countries_phones(countries_phones)
 signal got_continents(continents)
 signal got_currencies(currencies)
 signal got_languages(languages)
+signal error(error)
 
 func _init():
     pass
@@ -80,20 +81,20 @@ func _process_task(task : LocaleTask, _fake : bool = false) -> void:
         task.push_request(httprequest)
 
 
-func _on_task_completed(task_response: TaskResponse, task: LocaleTask) -> void:
+func _on_task_completed(_task_response: TaskResponse, task: LocaleTask) -> void:
     if task._handler!=null: task._handler.queue_free()
     if task.response != {}:
-        var _signal : String = ""
+        var _signal : Signal
         match task._code:
-            LocaleTask.Task.GET: _signal = "got"
-            LocaleTask.Task.GET_COUNTRIES: _signal = "got_countries"
-            LocaleTask.Task.GET_COUNTRIES_EU: _signal = "got_countries_eu"
-            LocaleTask.Task.GET_COUNTRIES_PHONES: _signal = "got_countries_phones"
-            LocaleTask.Task.GET_CONTINENTS: _signal = "got_continents"
-            LocaleTask.Task.GET_CURRENCIES: _signal = "got_currencies"
-            LocaleTask.Task.GET_LANGUAGES: _signal = "got_languages"
-            _: _signal = "success"
-        emit_signal(_signal, task.response)
+            LocaleTask.Task.GET: _signal = got
+            LocaleTask.Task.GET_COUNTRIES: _signal = got_countries
+            LocaleTask.Task.GET_COUNTRIES_EU: _signal = got_countries_eu
+            LocaleTask.Task.GET_COUNTRIES_PHONES: _signal = got_countries_phones
+            LocaleTask.Task.GET_CONTINENTS: _signal = got_continents
+            LocaleTask.Task.GET_CURRENCIES: _signal = got_currencies
+            LocaleTask.Task.GET_LANGUAGES: _signal = got_languages
+            _: _signal = success
+        _signal.emit(task.response)
     else:
-        emit_signal("error", task.error)
-    emit_signal("task_response", task_response)
+        error.emit(task.error)
+    task_response.emit(_task_response)

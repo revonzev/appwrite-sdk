@@ -14,6 +14,7 @@ signal got_image(image)
 signal got_favicon(favicon)
 signal got_qr(qr)
 signal got_initials(initials)
+signal error
 
 
 func _init():
@@ -124,18 +125,18 @@ func _process_task(task : AvatarsTask, _fake : bool = false) -> void:
 func _on_task_completed(task_response: TaskResponse, task: AvatarsTask) -> void:
     if task._handler!=null: task._handler.queue_free()
     if task.response != {}:
-        var _signal : String = ""
+        var _signal : Signal
         match task._code:
             # Client/Server
-            AvatarsTask.Task.GET_CREDIT_CARD: _signal = "got_credit_card"
-            AvatarsTask.Task.GET_BROWSER_ICON: _signal = "got_browser"
-            AvatarsTask.Task.GET_COUNTRY_FLAG: _signal = "got_flag"
-            AvatarsTask.Task.GET_AVATAR_IMAGE: _signal = "got_image"
-            AvatarsTask.Task.GET_FAVICON: _signal = "got_favicon"
-            AvatarsTask.Task.GET_QR: _signal = "got_qr"
-            AvatarsTask.Task.GET_INITIALS: _signal = "got_initials"
-            _: _signal = "success"
-        emit_signal(_signal, task.response)
+            AvatarsTask.Task.GET_CREDIT_CARD: _signal = got_credit_card
+            AvatarsTask.Task.GET_BROWSER_ICON: _signal = got_browser
+            AvatarsTask.Task.GET_COUNTRY_FLAG: _signal = got_flag
+            AvatarsTask.Task.GET_AVATAR_IMAGE: _signal = got_image
+            AvatarsTask.Task.GET_FAVICON: _signal = got_favicon
+            AvatarsTask.Task.GET_QR: _signal = got_qr
+            AvatarsTask.Task.GET_INITIALS: _signal = got_initials
+            _: _signal = success
+        _signal.emit(task.response)
     else:
-        emit_signal("error", task.error)
-    emit_signal("task_response", task_response)
+        error.emit(task.error)
+    task_response.emit(task_response)

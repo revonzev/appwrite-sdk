@@ -17,6 +17,7 @@ signal got_membership(membership)
 signal updated_membership_roles(membership)
 signal deleted_membership(membership)
 signal updated_membership_status(membership)
+signal error(error)
 
 func _init():
 	pass
@@ -110,24 +111,24 @@ func _process_task(task : TeamsTask, _fake : bool = false) -> void:
 		task.push_request(httprequest)
 
 
-func _on_task_completed(task_response: TaskResponse, task: TeamsTask) -> void:
+func _on_task_completed(_task_response: TaskResponse, task: TeamsTask) -> void:
 	if task._handler!=null: task._handler.queue_free()
 	if task.response != {}:
-		var _signal : String = ""
+		var _signal : Signal
 		match task._code:
-			TeamsTask.Task.GET: _signal = "got"
-			TeamsTask.Task.CREATE: _signal = "created"
-			TeamsTask.Task.LIST: _signal = "listed"
-			TeamsTask.Task.UPDATE: _signal = "updated"
-			TeamsTask.Task.DELETE: _signal = "deleted"
-			TeamsTask.Task.CREATE_MEMBERSHIP : _signal = "created_membership"
-			TeamsTask.Task.UPDATE_MEMBERSHIP_ROLES : _signal = "updated_membership_roles"
-			TeamsTask.Task.GET_MEMBERSHIPS : _signal = "got_membership"
-			TeamsTask.Task.UPDATE_MEMBERSHIP_STATUS : _signal = "updated_membership_status"
-			TeamsTask.Task.DELETE_MEMBERSHIP : _signal = "deleted_membership"
-			_: _signal = "success"
-		emit_signal(_signal, task.response)
+			TeamsTask.Task.GET: _signal = got
+			TeamsTask.Task.CREATE: _signal = created
+			TeamsTask.Task.LIST: _signal = listed
+			TeamsTask.Task.UPDATE: _signal = updated
+			TeamsTask.Task.DELETE: _signal = deleted
+			TeamsTask.Task.CREATE_MEMBERSHIP : _signal = created_membership
+			TeamsTask.Task.UPDATE_MEMBERSHIP_ROLES : _signal = updated_membership_roles
+			TeamsTask.Task.GET_MEMBERSHIPS : _signal = got_membership
+			TeamsTask.Task.UPDATE_MEMBERSHIP_STATUS : _signal = updated_membership_status
+			TeamsTask.Task.DELETE_MEMBERSHIP : _signal = deleted_membership
+			_: _signal = success
+		_signal.emit(task.response)
 	else:
-		emit_signal("error", task.error)
-	emit_signal("task_response", task_response)
+		error.emit(task.error)
+	task_response.emit(_task_response)
 

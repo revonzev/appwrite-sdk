@@ -106,4 +106,4 @@ func get_cookies(cookies : PackedStringArray) -> void:
 func complete(_response : Dictionary = {}, _error : Dictionary = {}) -> void:
 	response = _response
 	error = _error
-	emit_signal("completed", TaskResponse.new(response, error, cookies))
+	completed.emit(TaskResponse.new(response, error, cookies))

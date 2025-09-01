@@ -168,30 +168,30 @@ func _process_task(task : StorageTask, _fake : bool = false, _params: Dictionary
         task.push_request(httprequest)
 
 
-func _on_task_completed(task_response: TaskResponse, task: StorageTask) -> void:
+func _on_task_completed(_task_response: TaskResponse, task: StorageTask) -> void:
     if task._handler!=null: task._handler.queue_free()
     if task.response != {}:
-        var _signal : String = ""
+        var _signal : Signal
         match task._code:
             StorageTask.Task.LIST_FILES:
-                _signal = "listed_files"
+                _signal = listed_files
             StorageTask.Task.GET_FILE_PREVIEW:
-                _signal = "got_file_preview"
+                _signal = got_file_preview
             StorageTask.Task.GET_FILE:
-                _signal = "got_file"
+                _signal = got_file
             StorageTask.Task.DELETE_FILE:
-                _signal = "deleted_file"
+                _signal = deleted_file
             StorageTask.Task.UPDATE_FILE:
-                _signal = "updated_file"
+                _signal = updated_file
             StorageTask.Task.DOWNLOAD_FILE:
-                _signal = "downloaded_file"
+                _signal = downloaded_file
             StorageTask.Task.GET_FILE_VIEW:
-                _signal = "got_view"
+                _signal = got_view
             StorageTask.Task.GET_FILE_PREVIEW:
-                _signal = "got_preview"
+                _signal = got_preview
             _:
-                _signal = "success"
-        emit_signal(_signal, task.response)
+                _signal = success
+        _signal.emit(task.response)
     else:
-        emit_signal("error", task.error)
-    emit_signal("task_response", task_response)
+        error.emit(task.error)
+    task_response.emit(_task_response)

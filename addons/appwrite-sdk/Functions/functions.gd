@@ -21,6 +21,7 @@ signal created_tag(tag)
 signal listed_tags(tags)
 signal got_tag(tag)
 signal deleted_tag(tag)
+signal error(error)
 
 
 func _init():
@@ -137,28 +138,28 @@ func _process_task(task : FunctionsTask, _fake : bool = false) -> void:
         task.push_request(httprequest)
 
 
-func _on_task_completed(task_response: TaskResponse, task: FunctionsTask) -> void:
+func _on_task_completed(_task_response: TaskResponse, task: FunctionsTask) -> void:
     if task._handler!=null: task._handler.queue_free()
     if task.response != {}:
-        var _signal : String = ""
+        var _signal : Signal
         match task._code:
             # Client
-            FunctionsTask.Task.CREATE_EXECUTION: _signal = "created_execution"
-            FunctionsTask.Task.LIST_EXECUTIONS: _signal = "listed_executions"
-            FunctionsTask.Task.GET_EXECUTION: _signal = "got_execution"
+            FunctionsTask.Task.CREATE_EXECUTION: _signal = created_execution
+            FunctionsTask.Task.LIST_EXECUTIONS: _signal = listed_executions
+            FunctionsTask.Task.GET_EXECUTION: _signal = got_execution
             # Server
-            FunctionsTask.Task.CREATE: _signal = "created"
-            FunctionsTask.Task.LIST: _signal = "listed"
-            FunctionsTask.Task.GET: _signal = "got"
-            FunctionsTask.Task.UPDATE: _signal = "updated"
-            FunctionsTask.Task.UPDATE_TAG: _signal = "tag_updated"
-            FunctionsTask.Task.DELETE: _signal = "deleted"
-            FunctionsTask.Task.CREATE_TAG: _signal = "created_tag"
-            FunctionsTask.Task.LIST_TAGS: _signal = "listed_tags"
-            FunctionsTask.Task.GET_TAG: _signal = "got_tag"
-            FunctionsTask.Task.DELETE_TAG: _signal = "deleted_tag"
-            _: _signal = "success"
-        emit_signal(_signal, task.response)
+            FunctionsTask.Task.CREATE: _signal = created
+            FunctionsTask.Task.LIST: _signal = listed
+            FunctionsTask.Task.GET: _signal = got
+            FunctionsTask.Task.UPDATE: _signal = updated
+            FunctionsTask.Task.UPDATE_TAG: _signal = tag_updated
+            FunctionsTask.Task.DELETE: _signal = deleted
+            FunctionsTask.Task.CREATE_TAG: _signal = created_tag
+            FunctionsTask.Task.LIST_TAGS: _signal = listed_tags
+            FunctionsTask.Task.GET_TAG: _signal = got_tag
+            FunctionsTask.Task.DELETE_TAG: _signal = deleted_tag
+            _: _signal = success
+        _signal.emit(task.response)
     else:
-        emit_signal("error", task.error)
-    emit_signal("task_response", task_response)
+        error.emit(task.error)
+    task_response.emit(_task_response)

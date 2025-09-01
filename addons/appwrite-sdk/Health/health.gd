@@ -19,6 +19,7 @@ signal got_certificates_queue(certificate_queue)
 signal got_functions_queue(functions_queue)
 signal got_local_storage(local_storage)
 signal got_antivirus(got_antivirus)
+signal error(error)
 
 func _init():
     pass
@@ -106,28 +107,28 @@ func _process_task(task : HealthTask, _fake : bool = false) -> void:
         task.push_request(httprequest)
 
 
-func _on_task_completed(task_response: TaskResponse, task: HealthTask) -> void:
+func _on_task_completed(_task_response: TaskResponse, task: HealthTask) -> void:
     if task._handler!=null: task._handler.queue_free()
     if task.response != {}:
-        var _signal : String = ""
+        var _signal : Signal
         match task._code:
-            HealthTask.Task.HTTP: _signal = "got_http"
-            HealthTask.Task.DB: _signal = "got_db"
-            HealthTask.Task.CACHE: _signal = "got_cache"
-            HealthTask.Task.TIME: _signal = "got_time"
-            HealthTask.Task.WEBHOOKS_QUEUE: _signal = "got_webhooks_queue"
-            HealthTask.Task.TASKS_QUEUE: _signal = "got_tasks_queue"
-            HealthTask.Task.LOGS_QUEUE: _signal = "got_logs_queue"
-            HealthTask.Task.USAGE_QUEUE: _signal = "got_usage_queue"
-            HealthTask.Task.CERTIFICATES_QUEUE: _signal = "got_certificates_queue"
-            HealthTask.Task.FUNCTIONS_QUEUE: _signal = "got_functions_queue"
-            HealthTask.Task.LOCAL_STORAGE: _signal = "got_local_storage"
-            HealthTask.Task.ANTIVIRUS: _signal = "got_antivirus"
-            _: _signal = "success"
-        emit_signal(_signal, task.response)
+            HealthTask.Task.HTTP: _signal = got_http
+            HealthTask.Task.DB: _signal = got_db
+            HealthTask.Task.CACHE: _signal = got_cache
+            HealthTask.Task.TIME: _signal = got_time
+            HealthTask.Task.WEBHOOKS_QUEUE: _signal = got_webhooks_queue
+            HealthTask.Task.TASKS_QUEUE: _signal = got_tasks_queue
+            HealthTask.Task.LOGS_QUEUE: _signal = got_logs_queue
+            HealthTask.Task.USAGE_QUEUE: _signal = got_usage_queue
+            HealthTask.Task.CERTIFICATES_QUEUE: _signal = got_certificates_queue
+            HealthTask.Task.FUNCTIONS_QUEUE: _signal = got_functions_queue
+            HealthTask.Task.LOCAL_STORAGE: _signal = got_local_storage
+            HealthTask.Task.ANTIVIRUS: _signal = got_antivirus
+            _: _signal = success
+        _signal.emit(task.response)
     else:
-        emit_signal("error", task.error)
-    emit_signal("task_response", task_response)
+        error.emit(task.error)
+    task_response.emit(_task_response)
 
 
 func _fetch_cookies(task : HealthTask) -> void:

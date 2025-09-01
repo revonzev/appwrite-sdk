@@ -41,6 +41,7 @@ signal name_updated()
 signal password_updated()
 signal prefs_updated()
 signal pwd_recovery_updated()
+signal error(error)
 
 func _init():
 	pass
@@ -189,65 +190,65 @@ func _process_task(task : UsersTask, _fake : bool = false) -> void:
 		task.push_request(httprequest)
 
 
-func _on_task_completed(task_response: TaskResponse, task: UsersTask) -> void:
+func _on_task_completed(_task_response: TaskResponse, task: UsersTask) -> void:
 	if task._handler!=null: task._handler.queue_free()
 	if task.response != {}:
-		var _signal : String = ""
+		var _signal : Signal
 		match task._code:
 			UsersTask.Task.GET:
-				_signal = "got"
+				_signal = got
 			UsersTask.Task.GET_PREFS:
-				_signal = "got_prefs"
+				_signal = got_prefs
 			UsersTask.Task.GET_LOGS:
-				_signal = "got_logs"
+				_signal = got_logs
 			UsersTask.Task.GET_SESSIONS:
-				_signal = "got_sessions"
+				_signal = got_sessions
 			UsersTask.Task.GET_SESSION:
-				_signal = "got_session"
+				_signal = got_session
 			UsersTask.Task.CREATE:
-				_signal = "created"
+				_signal = created
 			UsersTask.Task.CREATE_SESSION:
 				_fetch_cookies(task)
-				_signal = "session_created"
+				_signal = session_created
 			UsersTask.Task.CREATE_ANONYMOUS_SESSION:
 				_fetch_cookies(task)
-				_signal = "anonymous_session_created"
+				_signal = anonymous_session_created
 			UsersTask.Task.CREATE_EMAIL_VERIFICATION:
-				_signal = "email_confirmation_created"
+				_signal = email_confirmation_created
 			UsersTask.Task.CREATE_JWT:
-				_signal = "jwt_created"
+				_signal = jwt_created
 			UsersTask.Task.CREATE_MAGIC_LINK:
-				_signal = "magic_link_created"
+				_signal = magic_link_created
 			UsersTask.Task.CREATE_PWD_RECOVERY:
-				_signal = "pwd_recovery_created"
+				_signal = pwd_recovery_created
 			UsersTask.Task.CREATE_SESSION_OAUTH2:
-				_signal = "oauth2_session_created"
+				_signal = oauth2_session_created
 			UsersTask.Task.DELETE:
-				_signal = "deleted"
+				_signal = deleted
 			UsersTask.Task.DELETE_SESSION:
-				_signal = "session_deleted"
+				_signal = session_deleted
 			UsersTask.Task.DELETE_SESSIONS:
-				_signal = "sessions_deleted"
+				_signal = sessions_deleted
 			UsersTask.Task.UPDATE_EMAIL:
-				_signal = "email_updated"
+				_signal = email_updated
 			UsersTask.Task.UPDATE_EMAIL_VERIFICATION:
-				_signal = "email_confirmation_updated"
+				_signal = email_confirmation_updated
 			UsersTask.Task.UPDATE_MAGIC_LINK:
-				_signal = "magic_link_updated"
+				_signal = magic_link_updated
 			UsersTask.Task.UPDATE_NAME:
-				_signal = "name_updated"
+				_signal = name_updated
 			UsersTask.Task.UPDATE_PASSWORD:
-				_signal = "password_updated"
+				_signal = password_updated
 			UsersTask.Task.UPDATE_PREFS:
-				_signal = "prefs_updated"
+				_signal = prefs_updated
 			UsersTask.Task.UPDATE_PWD_RECOVERY:
-				_signal = "pwd_recovery_updated"
+				_signal = pwd_recovery_updated
 			_:
-				_signal = "success"
-		emit_signal(_signal, task.response)
+				_signal = success
+		_signal.emit(task.response)
 	else:
-		emit_signal("error", task.error)
-	emit_signal("task_response", task_response)
+		error.emit(task.error)
+	task_response.emit(_task_response)
 
 
 func _fetch_cookies(task : UsersTask) -> void:

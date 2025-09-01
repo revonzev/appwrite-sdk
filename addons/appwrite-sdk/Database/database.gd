@@ -13,6 +13,7 @@ signal listed_collections(list)
 signal got_collection(collection)
 signal updated_collection(collection)
 signal deleted_collection()
+signal error(error)
 
 func _init():
 	pass
@@ -146,30 +147,30 @@ func _process_task(task : DatabaseTask, _fake : bool = false) -> void:
 func _on_task_completed(task_response: TaskResponse, task : DatabaseTask) -> void:
 	if task._handler!=null: task._handler.queue_free()
 	if task.response != {}:
-		var _signal: String = ""
+		var _signal: Signal
 		match task._code:
 			DatabaseTask.Task.CREATE_COLLECTION:
-				_signal = "created_collection"
+				_signal = created_collection
 			DatabaseTask.Task.CREATE_DOCUMENT:
-				_signal = "created_document"
+				_signal = created_document
 			DatabaseTask.Task.LIST_COLLECTIONS:
-				_signal = "listed_collections"
+				_signal = listed_collections
 			DatabaseTask.Task.LIST_DOCUMENTS:
-				_signal = "listed_documents"
+				_signal = listed_documents
 			DatabaseTask.Task.GET_COLLECTION:
-				_signal = "got_collection"
+				_signal = got_collection
 			DatabaseTask.Task.GET_DOCUMENT:
-				_signal = "got_document"
+				_signal = got_document
 			DatabaseTask.Task.DELETE_COLLECTION:
-				_signal = "deleted_collection"
+				_signal = deleted_collection
 			DatabaseTask.Task.DELETE_DOCUMENT:
-				_signal = "deleted_document"
+				_signal = deleted_document
 			DatabaseTask.Task.UPDATE_COLLECTION:
-				_signal = "updated_collection"
+				_signal = updated_collection
 			DatabaseTask.Task.UPDATE_DOCUMENT:
-				_signal = "updated_document"
+				_signal = updated_document
 			_:
 				pass
-		emit_signal(_signal, task.response)
+		_signal.emit(task.response)
 	else:
-		emit_signal("error", task.error)
+		error.emit(task.error)

@@ -72,7 +72,7 @@ func complete(_result: Dictionary = response,  _error : Dictionary = error) -> v
 	response = _result
 	error = _error
 	if _handler : _handler.queue_free()
-	emit_signal("completed", TaskResponse.new(response, error))
+	completed.emit(TaskResponse.new(response, error))
 
 
 func get_header_value(_header: String, headers : PackedStringArray) -> String:
