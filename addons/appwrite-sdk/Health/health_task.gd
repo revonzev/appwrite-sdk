@@ -47,7 +47,7 @@ func push_request(httprequest : HTTPRequest) -> void:
 	httprequest.request_completed.connect(_on_task_completed)
 	httprequest.request(_endpoint, _headers, true, _method)
 
-func _on_task_completed(result : int, response_code : int, headers : PackedStringArray, body : PoolByteArray) -> void:
+func _on_task_completed(result : int, response_code : int, headers : PackedStringArray, body : PackedByteArray) -> void:
 	if result > 0: 
 		complete({}, {result = result, message = "HTTP Request Error"})
 		return

@@ -19,7 +19,7 @@ var _method : int
 var _endpoint : String
 var _headers : PackedStringArray
 var _payload : Dictionary
-var _bytepayload : PoolByteArray
+var _bytepayload : PackedByteArray
 
 # EXPOSED VARIABLES ---------------------------------------------------------
 var response : Dictionary
@@ -28,7 +28,7 @@ var error : Dictionary
 
 var _handler : HTTPRequest
 
-func _init(code : int, endpoint : String, headers : PackedStringArray,  payload : Dictionary = {}, bytepayload: PoolByteArray = []):
+func _init(code : int, endpoint : String, headers : PackedStringArray,  payload : Dictionary = {}, bytepayload: PackedByteArray = []):
 	_code = code
 	_endpoint = endpoint
 	_headers = headers
@@ -56,7 +56,7 @@ func push_request(httprequest : HTTPRequest) -> void:
 	else:
 		httprequest.request(_endpoint, _headers, true, _method, to_json(_payload))
 
-func _on_task_completed(result : int, response_code : int, headers : PackedStringArray, body : PoolByteArray) -> void:
+func _on_task_completed(result : int, response_code : int, headers : PackedStringArray, body : PackedByteArray) -> void:
 	if result > 0: 
 		complete({}, {result = result, message = "HTTP Request Error"})
 		return

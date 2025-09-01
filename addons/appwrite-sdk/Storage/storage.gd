@@ -65,18 +65,18 @@ func __post(type: int, payload: Dictionary = {}, params: Dictionary = {}) -> Sto
     _process_task(storage_task)
     return storage_task
 
-func _read_file(file_path: String) -> PoolByteArray :
+func _read_file(file_path: String) -> PackedByteArray :
     var file : File = File.new()
     var error : int = file.open(file_path, File.READ)
     if error != OK: 
         printerr("could not open %s "%file_path)
-        return PoolByteArray([])
-    var file_buff : PoolByteArray = file.get_buffer(file.get_len())
+        return PackedByteArray([])
+    var file_buff : PackedByteArray = file.get_buffer(file.get_len())
     file.close()
     return file_buff
 
-func _build_multipart(file_path: String, read: PackedStringArray, write: PackedStringArray) -> PoolByteArray:
-    var bytes: PoolByteArray = ("--"+BOUNDARY+"\r\n").to_ascii()
+func _build_multipart(file_path: String, read: PackedStringArray, write: PackedStringArray) -> PackedByteArray:
+    var bytes: PackedByteArray = ("--"+BOUNDARY+"\r\n").to_ascii()
     bytes.append_array(('Content-Disposition: form-data; name="file"; filename="%s"\r\n'%[file_path.get_file()]).to_ascii())
     bytes.append_array("Content-Type: text/plain\r\n\r\n".to_ascii())
     bytes.append_array(_read_file(file_path))
@@ -95,7 +95,7 @@ func _build_multipart(file_path: String, read: PackedStringArray, write: PackedS
 
 #       CLIENT & SERVER
 func create_file(file_path: String, read: PackedStringArray = [], write: PackedStringArray = []) -> StorageTask:
-    var file: PoolByteArray = _build_multipart(file_path, read, write)
+    var file: PackedByteArray = _build_multipart(file_path, read, write)
     if file.empty(): 
         var fake_task: StorageTask = StorageTask.new(-1, "", [])
         fake_task.error = { message = "Could not open file." }
@@ -141,7 +141,7 @@ func get_file_view(file_id: String, save_path: String = "") -> StorageTask:
     return __get(StorageTask.Task.GET_FILE_VIEW, {file_id = file_id, to_path = save_path })
 
 func update_file(file_path: String, read: PackedStringArray, write: PackedStringArray) -> StorageTask:
-    var file: PoolByteArray = _build_multipart(file_path, read, write)
+    var file: PackedByteArray = _build_multipart(file_path, read, write)
     if file.empty(): 
         var fake_task: StorageTask = StorageTask.new(-1, "", [])
         fake_task.error = { message = "Could not open file." }

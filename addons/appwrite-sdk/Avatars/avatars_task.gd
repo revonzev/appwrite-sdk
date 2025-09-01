@@ -26,7 +26,7 @@ var error : Dictionary
 
 var _handler : HTTPRequest
 
-func _init(code : int, endpoint : String, headers : PackedStringArray,  payload : Dictionary = {}, bytepayload: PoolByteArray = []):
+func _init(code : int, endpoint : String, headers : PackedStringArray,  payload : Dictionary = {}, bytepayload: PackedByteArray = []):
 	_code = code
 	_endpoint = endpoint
 	_headers = headers
@@ -42,7 +42,7 @@ func push_request(httprequest : HTTPRequest) -> void:
 	httprequest.request_completed.connect(_on_task_completed)
 	httprequest.request(_endpoint, _headers, true, _method, to_json(_payload))
 
-func _on_task_completed(result : int, response_code : int, headers : PackedStringArray, body : PoolByteArray) -> void:
+func _on_task_completed(result : int, response_code : int, headers : PackedStringArray, body : PackedByteArray) -> void:
 	if result > 0: 
 		complete({}, {result = result, message = "HTTP Request Error"})
 		return
