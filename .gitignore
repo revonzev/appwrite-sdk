@@ -12,6 +12,7 @@ addons/*
 [Rr]esource/
 project.godot
 icon.png
+icon.svg
 *.import
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,godot,windows
