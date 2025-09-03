@@ -50,4 +50,3 @@ func _on_data():
 
 func _process(delta):
 	_client.poll()
-
